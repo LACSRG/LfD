@@ -67,13 +67,22 @@ Ch 1: The Learning Problem}
     \item Let \(\rho = \min_{1\leq n\leq N}
       y_n({\bf w}^{*\textup{T}}{\bf x}_n)\). Show that
       \(\rho > 0\).
-    \item Show that \({\bf w}^\textup{T}(t) \geq
+    \item Show that \({\bf w}^\textup{T}(t){\bf w}^* \geq
       {\bf w}^\textup{T}(t-1){\bf w}^* + \rho\), and conclude that
       \({\bf w}^\textup{T}(t){\bf w}^* \geq t\rho\).
     \item Show that \(||{\bf w}(t)||^2 \leq
       ||{\bf w}(t-1)||^2 + ||{\bf x}(t-1)||^2\).
     \item Show by induction that \(||{\bf w}(t)||^2 \leq tR^2\), where
       \(R = \max_{1\leq n\leq N}||{\bf x}_n||\).
+    \item Using (b) and (d), show that
+      \begin{equation*}
+        \frac{{\bf w}^\textup{T}(t)}{||{\bf w}(t)||} {\bf w}^*
+          \geq \sqrt{t} \frac{\rho}{R}
+      \end{equation*}
+      and hence prove that
+      \begin{equation*}
+        t \leq \frac{R^2||{\bf w}^*||^2}{\rho}.
+      \end{equation*}
   \end{enumerate}
 \end{problem}
 
@@ -90,9 +99,514 @@ Ch 1: The Learning Problem}
       and so \(y_n\left({\bf w}^{*\textup{T}}{\bf x}_n\right) > 0\) for each
       \(n\). In particular \(\rho = \min_{1\leq n\leq N}
       y_n\left({\bf w}^{*\textup{T}}{\bf x}_n\right) > 0\). \(\qed\)
-    \item
-    \item
-    \item
+    \item The PLA update rule is \({\bf w}(t)\from{\bf w}(t-1)+y_n{\bf x}_n\),
+      so
+      \begin{align*}
+        {\bf w}^\textup{T}(t){\bf w}^* &=
+          \left({\bf w}^\textup{T}(t-1)+y_n{\bf x}^\textup{T}_n\right){\bf w}^*
+            \\
+          &= {\bf w}^\textup{T}(t-1){\bf w}^*+y_n{\bf x}^\textup{T}_n{\bf w}^*
+            \\
+          &= {\bf w}^\textup{T}(t-1){\bf w}^*+y_n{\bf w}^{*\textup{T}}{\bf x}_n
+            \\
+          &\geq {\bf w}^\textup{T}(t-1){\bf w}^*+\rho
+      \end{align*}
+      and by induction on \(t\) starting from \({\bf w}(0) = {\bf 0}\), we have
+      \({\bf w}(t) \geq t\rho\).
+    \item Starting again from the PLA update rule, we have
+      \begin{align*}
+        ||{\bf w}(t)||^2 &= {\bf w}^\textup{T}(t){\bf w}(t) & & \\
+        &=\left({\bf w}^\textup{T}(t-1)+y_n{\bf x}^\textup{T}_n\right)
+          \left({\bf w}(t-1)+y_n{\bf x}_n\right) & & \\
+        &= ||{\bf w}(t-1)||^2 + ||{\bf x}_n||^2 +
+          2y_n{\bf w}^\textup{T}(t-1){\bf x}_n & & \\
+        &\leq ||{\bf w}(t-1)||^2 + ||{\bf x}_n||^2 & &\qed
+      \end{align*}
+      where the final step follows from the assumption that \({\bf x}_n\) is
+      misclassified by \({\bf w}(t-1)\).
+    \item The case for \(t=1\) follows directly from the preceding conclusion,
+      and we induct on \(t\).
+    \item If \(||{\bf w}^\textup{T}(t)|| \neq 0\) then
+      \begin{align*}
+        {\bf w}^\textup{T}(t){\bf w}^* &\geq t\rho & & \\
+        \frac{{\bf w}^\textup{T}(t){\bf w}^*}{||{\bf w}^\textup{T}(t)||} &\geq
+          \frac{t\rho}{||{\bf w}^\textup{T}(t)||} & & \\
+        &\geq \frac{t\rho}{\sqrt{t}R} & & \\
+        \frac{{\bf w}^\textup{T}(t)}{||{\bf w}(t)||} &\geq
+          \sqrt{t} \cdot \frac{\rho}{R} & & \\
+        \left(\frac{{\bf w}^\textup{T}(t){\bf w}^*}{||{\bf w}(t)||}\right)^2
+          &\geq t \cdot \frac{\rho^2}{R^2} & & \\
+        \frac{R^2}{\rho^2} \cdot
+          \left(\frac{{\bf w}^\textup{T}(t){\bf w}^*}
+          {||{\bf w}(t)||}\right)^2 &\geq t & & \\
+        \frac{R^2}{\rho^2} \cdot ||{\bf w}^*||^2 &\geq & &\qed
+      \end{align*}
+  \end{enumerate}
+\end{solution}
+
+% Problem 1.4
+\begin{problem}[1.4]
+  In Exercise 1.4, we use an artificial data set to study the perceptron
+  learning algorithm. This problem leads you to explore the algorithm further
+  with data sets of different sizes and dimensions.
+  \begin{enumerate}
+    \item ... elided ...
+  \end{enumerate}
+\end{problem}
+
+% Problem 1.5
+\begin{problem}[1.5]
+  ... elided ...
+\end{problem}
+
+% Problem 1.6
+\begin{problem}[1.6]
+  Consider a sample of 10 marbles drawn independently from a bin that holds red
+  and green marbles. The probability of a red marble is \(\mu\). For
+  \(\mu = 0.05\), \(\mu = 0.5\), and \(\mu = 0.8\), compute the probability of
+  getting no red marbles (\(\nu = 0\)) in the following cases:
+  \begin{enumerate}
+    \item We draw only one such sample.  Compute the probability that
+      \(\nu = 0\).
+    \item We draw 1000 independent samples. Compute the probability that (at
+      least) one of the samples has \(\nu=0\).
+    \item Repeat (b) for \(10^6\) independent samples.
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}\ 
+  \begin{enumerate}
+    \item \(\mathbb{P}\left[\nu=0 | \mu\right] = (1-\mu)^{10}\), so
+      \begin{align*}
+        \mathbb{P}\left[\nu=0|\mu=0.05\right] &\approx 0.5987 \\
+        \mathbb{P}\left[\nu=0|\mu=0.5\right] &\approx 9.766 \times 10^{-4} \\
+        \mathbb{P}\left[\nu=0|\mu=0.8\right] &\approx 5.905 \time 10^{-6}
+      \end{align*}
+    \item \(\mathbb{P}\left[\min_{1\leq i\leq 1000} \nu_i = 0\right] = 1 -
+      (1 - (1-\mu)^{10})^{1000}\), so
+      \begin{align*}
+        \mathbb{P}\left[\min_{1\leq i\leq 1000} \nu_i=0|\mu=0.05\right]
+          &\approx 1.0 \\
+        \mathbb{P}\left[\min_{1\leq i\leq 1000} \nu_i=0|\mu=0.5\right]
+          &\approx 0.6236 \\
+        \mathbb{P}\left[\min_{1\leq i\leq 1000} \nu_i=0|\mu=0.8\right]
+          &\approx 1.024 \times 10^{-4}
+      \end{align*}
+    \item \(\mathbb{P}\left[\min_{1\leq i\leq 10^6} \nu_i = 0\right] = 1 -
+      (1 - (1-\mu)^{10})^{10^6}\), so
+      \begin{align*}
+        \mathbb{P}\left[\min_{1\leq i\leq 10^6} \nu_i=0|\mu=0.05\right]
+          &\approx 1.0 \\
+        \mathbb{P}\left[\min_{1\leq i\leq 10^6} \nu_i=0|\mu=0.5\right]
+          &\approx 0.6236 \\
+        \mathbb{P}\left[\min_{1\leq i\leq 10^6} \nu_i=0|\mu=0.8\right]
+          &\approx 0.09733
+      \end{align*}
+  \end{enumerate}
+\end{solution}
+
+% Problem 1.7
+\begin{problem}[1.7]
+  A sample of heads and tails is created by tossing a coin a number of times
+  independently. Assume we have a number of coins that generate different
+  samples independently. For a given coin, let the probability of heads
+  (probability of error) be \(\mu\). The probability of obtaining \(k\) heads
+  in \(N\) tosses of this coin is given by the binomial distribution:
+  \begin{equation*}
+    P\left[k | N, \mu\right] = \binom{N}{k} \mu^k (1-\mu)^{N-k}.
+  \end{equation*}
+  Remember that the training error \(\nu\) is \(\frac{k}{N}\).
+  \begin{enumerate}
+    \item Assume the sample size (\(N\)) is 10. If all coins have \(\mu = 0.05\)
+      compute the probability that at least one coin will have \(\nu = 0\) for
+      the case of 1 coin, 1000 coins, \(10^6\) coins. Repeat for \(\mu = 0.8\).
+    \item For the case \(N = 6\) and 2 coins with \(\mu = 0.5\) for both coins,
+      plot ... elided ...
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}\ 
+  \begin{enumerate}
+    \item This is just Problem 1.6 again.
+    \item ... elided ...
+  \end{enumerate}
+\end{solution}
+
+% Problem 1.8
+\begin{problem}[1.8]
+  The Hoeffding Inequality is one form of the \emph{law of large numbers}. One
+  of the simplest forms of that law is the \emph{Chebyshev Inequality}, which
+  you will prove here.
+  \begin{enumerate}
+    \item If \(t\) is a non-negative random variable, prove that for any
+      \(\alpha > 0\), \(\mathbb{P}\left[t \geq \alpha\right] \leq
+      \frac{\mathbb{E}(t)}{\alpha}\).
+    \item If \(u\) is any random variable with mean \(\mu\) and variance
+      \(\sigma^2\), prove that for any \(\alpha > 0\),
+      \(\mathbb{P}\left[(u - \mu)^2 \geq \alpha\right] \leq
+      \frac{\sigma^2}{\alpha}\).
+    \item If \(u_1, \cdots, u_N\) are iid random variables, each with mean
+      \(\mu\) and variance \(\sigma^2\), and \(u = \frac{1}{N}\sum_{n=1}^Nu_n\),
+      prove that for any \(\alpha > 0\),
+      \begin{equation*}
+        \mathbb{P}\left[(u - \mu)^2 \geq \alpha\right] \leq
+        \frac{\sigma^2}{N\alpha}.
+      \end{equation*}
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}\ 
+  \begin{enumerate}
+    \item By definition,
+      \begin{equation*}
+        \mathbb{E}(t)
+          = \int_0^{\infty} t \cdot p(t) \textup{ } dt
+          = \int_0^{\alpha} t \cdot p(t) \textup{ } dt +
+            \int_{\alpha}^{\infty} t \cdot p(t) \textup{ } dt.
+      \end{equation*}
+      Since \(\int_{0}^{\alpha} t \cdot p(t) \textup{ } dt \geq 0\), we have
+      \begin{equation*}
+        \mathbb{E}(t) \geq \int_{\alpha}^{\infty} t \cdot p(t) \textup{ } dt.
+      \end{equation*}
+      From \(\alpha \leq t < \infty\), it follows that
+      \begin{align*}
+        \mathbb{E}(t)
+          &\geq \int_{\alpha}^{\infty} \alpha \cdot p(t) \textup{ } dt
+          = \alpha \int_{\alpha}^{\infty} p(t) \textup{ } dt
+          = \alpha \mathbb{P}\left[t \geq \alpha\right] \\
+        \frac{\mathbb{E}(t)}{\alpha}
+          &\geq \mathbb{P}\left[t \geq \alpha\right]
+      \end{align*}
+      \qed
+    \item Applying (a) with \(t = (u-\mu)^2\) and noting that
+      \(\mathbb{E}(t) = \textup{var}(u) = \sigma^2\), we find that
+      \begin{align*}
+        \mathbb{P}\left[(u - \mu)^2 \geq \alpha\right]
+          &\leq \frac{\sigma^2}{\alpha}.
+      \end{align*}
+      \qed
+    \item By the assumption that \(u_1, \cdots, u_N\) are iid with
+      \(\mathbb{E}(u_i) = \mu\) and \(\textup{var}(u_i) = \sigma^2\), it follows
+      that \(\mathbb{E}(u) = \mu\) and \(\textup{var}(u) = \frac{\sigma^2}{N}\).
+      The result follows immediately from applying (b):
+      \(\mathbb{P}\left[(u - \mu)^2 \geq \alpha \right] \leq
+      \frac{\sigma^2}{N \alpha}\).
+  \end{enumerate}
+\end{solution}
+
+% Problem 1.9
+\begin{problem}[1.9]
+  In this problem, we derive a form of the law of large numbers that has an
+  exponential bound, called the \emph{Chernoff bound}. We focus on the simple
+  case of flipping a fair coin, and use an approach similar to Problem 1.8.
+  \begin{enumerate}
+    \item Let \(t\) be a (finite) random variable, \(\alpha\) be a positive
+      constant, and \(s\) be a positive parameter. If \(T(s) =
+      \mathbb{E}_t(e^{st})\), prove that
+      \begin{equation*}
+        \mathbb{P}\left[t \geq \alpha\right] \leq e^{-s\alpha}T(s).
+      \end{equation*}
+    \item Let \(u_1, \cdots, u_N\) be iid random variables, and let
+      \(u = \frac{1}{N}\sum_{n=1}^N u_n\). If \(U(s) =
+      \mathbb{E}_{u_n}(e^{su_n})\) (for any \(n\)), prove that
+      \begin{equation*}
+        \mathbb{P}\left[u \geq \alpha\right] \leq
+          \left(e^{-s\alpha}U(s)\right)^N.
+      \end{equation*}
+    \item Suppose \(\mathbb{P}\left[u_n=0\right] = \mathbb{P}\left[u_n=1\right]
+      = \frac{1}{2}\) (fair coin). Evaluate \(U(s)\) as a function of \(s\), and
+      minimize \(e^{-s\alpha}U(s)\) with respect to \(s\) for fixed \(\alpha\),
+      \(0 < \alpha < 1\).
+    \item Conclude in (c) that, for \(0 < \epsilon < \frac{1}{2}\),
+      \begin{equation*}
+        \mathbb{P}\left[u \geq \mathbb{E}(u) + \epsilon\right] \leq
+          2^{-\beta N},
+      \end{equation*}
+      where \(\beta = 1 + \left(\frac{1}{2} + \epsilon\right)
+        \log_2\left(\frac{1}{2} + \epsilon\right) +
+        \left(\frac{1}{2} - \epsilon\right)
+        \log_2\left(\frac{1}{2} - \epsilon\right)\)
+      and \(\mathbb{E}(u) =
+        \frac{1}{2}\).
+      Show that \(\beta > 0\), hence the bound is exponentially decreasing in
+      \(N\).
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}\ 
+  \begin{enumerate}
+    \item Expanding \(\mathbb{E}_t(e^{st})\) as an integral, we obtain the
+      desired result:
+      \begin{equation*}
+        T(s) = \mathbb{E}_t(e^{st}) = \int_{-\infty}^{\infty} e^{st} \cdot
+          p(t) \textup{ } dt
+          = \int_{-\infty}^{\alpha} e^{st} \cdot p(t) \textup{ } dt +
+          \int_{\alpha}^{\infty} e^{st} \cdot p(t) \textup{ } dt.
+      \end{equation*}
+      Since both \(e^{st}\) and \(p(t)\) are always non-negative,
+      \(\int_{-\infty}^{\alpha} e^{st} p(t) \textup{ } dt > 0\), and we have
+      \begin{equation*}
+        T(s) = \int_{-\infty}^{\alpha} e^{st} \cdot p(t) \textup{ } dt +
+          \int_{\alpha}^{\infty} e^{st} \cdot p(t) \textup{ } dt
+        \geq \int_{\alpha}^{\infty} e^{st} \cdot p(t) \textup{ } dt.
+      \end{equation*}
+      By monotonicity, \(e^{st} \geq e^{s\alpha}\) for \(t \geq \alpha\), so
+      \begin{align*}
+        T(s) &\geq \int_{\alpha}^{\infty} e^{st} \cdot p(t) \textup{ } dt
+        \geq \int_{\alpha}^{\infty} e^{s\alpha} \cdot p(t) \textup{ } dt
+        \geq e^{s\alpha} \int_{\alpha}^{\infty} p(t) \textup{ } dt & & \\
+        e^{-s\alpha}T(s) &\geq \int_{\alpha}^{\infty} p(t) \textup{ } dt
+          = \mathbb{P}\left[t \geq \alpha\right]. & &\qed
+      \end{align*}
+    \item First, we algebraically convert to a more convenient form:
+      \begin{equation*}
+        \mathbb{P}\left[u \geq \alpha\right] =
+          \mathbb{P}\left[\frac{1}{N}\sum_{n=1}^Nu_n \geq \alpha\right]
+          = \mathbb{P}\left[\sum_{n=1}^Nu_n \geq N \alpha\right].
+      \end{equation*}
+      Applying (a) with \(t = u = \frac{1}{N}\sum_{n=1}^N u_n\), we obtain
+      \begin{equation*}
+        \mathbb{P}\left[\sum_{n=1}^Nu_n \geq N \alpha\right] \leq
+          e^{-sN\alpha} \mathbb{E}_u\left(e^{s\sum_{n=1}^Nu_n}\right)
+          = e^{-sN\alpha} \prod_{n=1}^N \mathbb{E}_u\left(e^{su_n}\right).
+      \end{equation*}
+      By independence of the \(u_i\) we have \(\mathbb{E}_u(u_n)\), so
+      \begin{equation*}
+          e^{-sN\alpha} \prod_{n=1}^N \mathbb{E}_u\left(e^{su_n}\right)
+          = e^{-sN\alpha} \prod_{n=1}^N \mathbb{E}_{u_n}\left(e^{su_n}\right)
+      \end{equation*}
+      which yields
+      \begin{align*}
+        \mathbb{P}\left[u \geq \alpha\right] &\leq
+          \left(e^{-s\alpha} U(s)\right)^N. & &\qed
+      \end{align*}
+    \item Expanding the definition of expectation, we find that
+      \begin{equation*}
+        U(s) = \mathbb{E}_{u_n}(e^{su_n}) =
+          \frac{1}{2} e^{s \cdot 0} + \frac{1}{2} s^{s \cdot 1} =
+          \frac{1 + e^s}{2}.
+      \end{equation*}
+      To minimize, we take the derivative
+      \begin{align*}
+        \frac{d}{ds}\left[e^{-s\alpha} U(s)\right]
+          &= \frac{d}{ds}\left[e^{-s\alpha}
+            \left(\frac{1 + e^s}{2}\right)\right]
+          = \frac{1}{2} \frac{d}{ds} \left[ e^{-s\alpha} +
+            e^{s\left(1-\alpha\right)}\right] \\
+        \frac{d}{ds}\left[e^{-s\alpha} U(s)\right]
+          &= \frac{1}{2} \left( -\alpha e^{-s\alpha} +
+            (1 - \alpha) e^{s(1-\alpha)}\right)
+      \end{align*}
+      and find the root in terms of \(\alpha\):
+      \begin{align*}
+        0 &= \frac{1}{2} \left( -\alpha e^{-\hat{s}\alpha} +
+          (1 - \alpha) e^{\hat{s}(1-\alpha)}\right) \\
+        \alpha e^{-\hat{s}\alpha} &= (1 - \alpha) e^{\hat{s}(1-\alpha)} \\
+        \alpha &= (1 - \alpha) e^{\hat{s}} \\
+        \frac{\alpha}{1-\alpha} &= e^{\hat{s}} \\
+        \log \left(\frac{\alpha}{1-\alpha}\right) &= \hat{s}.
+      \end{align*}
+      Plugging back in, we find the minimum:
+      \begin{align*}
+        e^{-\hat{s}\alpha} U(\hat{s}) =
+          \left(\frac{\alpha}{1-\alpha}\right)^{-\alpha}
+          \left(\frac{1}{2(1 - \alpha)}\right) &=
+          2^{-1} \alpha^{-\alpha} (1 - \alpha)^{-(1 - \alpha)}. & &\qed
+      \end{align*}
+    \item Applying (b) with \(\alpha = \mathbb{E}(u) + \epsilon\), we obtain
+      \begin{equation*}
+        \mathbb{P}\left[u \geq \alpha\right]
+          \leq \left(e^{-s\alpha} \left(\frac{1 + e^s}{2}\right)\right)^N.
+      \end{equation*}
+      Substituting our result from (c), we find
+      \begin{equation*}
+        \mathbb{P}\left[u \geq \alpha\right] \leq
+          \left(2^{-1} \alpha^{-\alpha} (1-\alpha)^{-(1-\alpha)}\right)^N =
+            2^{-\beta N}
+      \end{equation*}
+      where
+      \begin{equation*}
+        \beta = 1 + \alpha \log_2 \alpha + (1 - \alpha)\log_2 (1 - \alpha).
+      \end{equation*}
+      Since \(\mathbb{E}(u) = \frac{1}{2}\), we have
+      \begin{equation*}
+        \beta = 1 + \left(\frac{1}{2} + \epsilon\right)
+          \log_2 \left(\frac{1}{2} + \epsilon\right) +
+          \left(\frac{1}{2} - \epsilon\right)
+          \log_2 \left(\frac{1}{2} - \epsilon\right).
+      \end{equation*}
+      Taking the derivative, we find that \(\beta\) is monotonically increasing
+      in \(0 < \epsilon < \frac{1}{2}\):
+      \begin{equation*}
+        \frac{d}{d\epsilon}\left[\beta\right] =
+          \log_2 \left(\frac{1}{2} + \epsilon\right) +
+          \frac{\frac{1}{2} + \epsilon}{\frac{1}{2} + \epsilon} -
+          \log_2 \left(\frac{1}{2} - \epsilon\right) -
+          \frac{\frac{1}{2} - \epsilon}{\frac{1}{2} - \epsilon}
+          = \log_2 \left(\frac{1 + 2\epsilon}{1 - 2\epsilon}\right) > 0.
+      \end{equation*}
+      Consequently, \(\beta\) is bounded below by its value at \(\epsilon = 0\):
+      \begin{equation*}
+        \beta \big|_{\epsilon = 0} = 1 > 0
+      \end{equation*}
+      and our bound decreases exponentially in \(N\). \qed
+  \end{enumerate}
+\end{solution}
+
+% Problem 1.10
+\begin{problem}[1.10]
+  Assume that \(\mathcal{X} = \{{\bf x}_1, {\bf x}_2, \ldots, {\bf x}_N,
+  {\bf x}_{N+1}, \ldots, {\bf x}_{N+M}\}\) and
+  \(\mathcal{Y} = \{-1, +1\}\) with an unknown target function
+  \(f : \mathcal{X} \to \mathcal{Y}\). The training data set \(\mathcal{D}\)
+  is \(({\bf x}_1, y_1), \ldots, ({\bf x}_N, y_N)\).
+  Define the \emph{off-training-set error}
+  of a hypothesis \(h\) with respect to \(f\) by
+  \begin{equation*}
+    E_{\textup{off}}(h, f) = \frac{1}{M} \sum_{m=1}^M
+        \llbracket h({\bf x}_{N+m}) \neq f({\bf x}_{N+m}) \rrbracket.
+  \end{equation*}
+  \begin{enumerate}
+    \item Say \(f({\bf x}) = +1\) for all \({\bf x}\) and
+      \begin{equation*}
+        h({\bf x}) = \begin{cases}
+          +1, & \textup{for } {\bf x} = {\bf x}_k \textup{ and \(k\) is odd and}
+            \textup{ } 1 \leq k \leq N + M \textup{;} \\
+          -1, & \textup{otherwise.}
+        \end{cases}.
+      \end{equation*}
+      What is \(E_{\textup{off}}(h, f)\)?
+    \item We say that a target function \(f\) can `generate' \(\mathcal{D}\) in
+      a noiseless setting if \(y_n = f({\bf x}_n)\) for all
+      \(({\bf x}_n, y_n) \in \mathcal{D}\). For a fixed \(\mathcal{D}\) of size
+      \(N\), how many possible \(f : \mathcal{X} \to \mathcal{Y}\) can generate
+      \(\mathcal{D}\) in a noiseless setting?
+    \item For a given hypothesis \(h\) and an integer \(k\) between 0 and \(M\),
+      how many of those \(f\) in (b) satisfy
+      \(E_{\textup{off}}(h, f) = \frac{k}{M}\)?
+    \item For a given hypothesis \(h\), if all those \(f\) that generate
+      \(\mathcal{D}\) in a noiseless setting are equally likely in probability,
+      what is the expected off-training-set error
+      \(\mathbb{E}_f[E_{\textup{off}}(h, f)]\)?
+    \item A deterministic algorithm \(A\) is defined as a procedure that takes
+      \(\mathcal{D}\) as an input, and outputs a hypothesis
+      \(h = A(\mathcal{D})\). Argue that for any two deterministic algorithms
+      \(A_1\) and \(A_2\),
+      \begin{equation*}
+        \mathbb{E}_f\left[E_{\textup{off}}\left(A_1(\mathcal{D}),
+          f\right)\right]
+          = \mathbb{E}_f\left[E_{\textup{off}}\left(A_2(\mathcal{D}),
+          f\right)\right].
+      \end{equation*}
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}\ 
+  \begin{enumerate}
+    \item By direct case analysis,
+      \begin{equation*}
+        E_{\textup{off}}(h, f) = \frac{1}{M} \begin{cases}
+          \frac{M}{2} & M \textup{ is even;} \\
+          \frac{M-1}{2} & M \textup{ is odd and } N \textup{ is odd;} \\
+          \frac{M+1}{2} & M \textup{ is odd and } N \textup{ is even.}
+        \end{cases}
+      \end{equation*}
+    \item Such \(f\) are fixed on \({\bf x}_1,\ldots,{\bf x}_N\) and unspecified
+      on \({\bf x}_{N+1}, \ldots, {\bf x}_{N+M}\), so there are \(2^M\) possible
+      targets \(f\).
+    \item Fixing \(h\) fixes the values of \(f\) at \(k\) points, leaving other
+      points unspecified, so there are \(2^{M-k}\) such \(f\).
+    \item The distribution of \(E_{\textup{off}}(h, f)\) is symmetric, and so
+      has expectation \(\frac{1}{2}\).
+    \item By (d),
+      \(\mathbb{E}_f\left[E_{\textup{off}}(A_1(\mathcal{D}), f)\right] =
+        \frac{1}{2}
+        = \mathbb{E}_f\left[E_{\textup{off}}(A_2(\mathcal{D}), f)\right]\).
+  \end{enumerate}
+\end{solution}
+
+% Problem 1.11
+\begin{problem}[1.11]
+  The matrix which tabulates the cost of various errors for the CIA and
+  Supermarket applications in Example 1.1 is called a \emph{risk} or \emph{loss
+  matrix}.
+
+  For the two risk matrices in Example 1.1, explicitly write down the in-sample
+  error \(E_{\textup{in}}\) that one should minimize to obtain \(g\). This
+  in-sample error should weight the different types of errors based on the risk
+  matrix.
+\end{problem}
+
+\begin{solution}
+  ... elided ...
+\end{solution}
+
+% Problem 1.12
+\begin{problem}[1.12]
+  This problem investigates how changing the error measure can change the result
+  of the learning process. You have \(N\) data points \(y_1 \leq \cdots \leq
+  y_N\) and with to estimate a `representative' value.
+  \begin{enumerate}
+    \item If you algorithm is to find the hypothesis \(h\) that minimizes the
+      in-sample sum of squared deviations,
+      \begin{equation*}
+        E_{\textup{in}}(h) = \sum_{n=1}^N (h - y_n)^2,
+      \end{equation*}
+      then show that your estimate will be the in-sample mean,
+      \begin{equation*}
+        h_{\textup{mean}} = \frac{1}{N} \sum_{n=1}^N y_n.
+      \end{equation*}
+    \item If your algorithm is to find the hypothesis \(h\) that minimizes the
+      in-sample sum of absolute deviations,
+      \begin{equation*}
+        E_{\textup{in}}(h) = \sum_{n=1}^N |h - y_n|,
+      \end{equation*}
+      then show that your estimate will be the in sample median
+      \(h_{\textup{med}}\), which is any value for which half the data
+      points are at most \(h_{\textup{med}}\) and half the data points
+      are at least \(h_{\textup{med}}\).
+    \item Suppose \(y_N\) is perturbed to \(y_N + \epsilon\), where
+      \(\epsilon \to infty\). So, the single data point \(y_N\) becomes an
+      outlier. What happens to your two estimators \(h_{\textup{mean}}\) and
+      \(h_{\textup{med}}\)?
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}\ 
+  \begin{enumerate}
+    \item Solving for the root of the derivative of in-sample error, we find
+      that
+      \begin{align*}
+        0 &= \frac{d}{dh}\left[\sum_{n=1}^N (h - y_n)^2\right]
+          = \sum_{n=1}^N -2(h^* - y_n)
+          = \sum_{n=1}^N (y_n - h^*) & & \\
+        N h^* &= \sum_{n=1}^N y_n & & \\
+        h^* &= \frac{1}{N} \sum_{n=1}^N y_n = h_{\textup{mean}}. & &\qed
+      \end{align*}
+    \item Define \(z_i = y_{i+1} - y_i \geq 0\) for all \(1 \leq i < N\), and
+      let
+      \(h_0 \leq y_1\), \(h_{N} \geq y_N\), and \(y_i \leq h_i \leq y_{i+1}\)
+      for all \(1 \leq i < N\).
+      For \(0 \leq k \leq N\), we can write the in-sample error as
+      \begin{equation*}
+        E_{\textup{in}}(h_k) = \begin{cases}
+          N(y_1 - h_0) + \sum_{n=1}^{N-1} (N - n) z_n & k = 0; \\
+          \sum_{n=1}^{k-1} n z_n + z_k + \sum_{n=k+1}^{N-1} (N - n) z_n
+            & 1 \leq k < N; \\
+          \sum_{n=1}^{N-1} n z_n + N(h_N - y_N) & k = N.
+        \end{cases}
+      \end{equation*}
+      Consider \(F_j = E_{\textup{in}}(h_{j+1}) - E_{\textup{in}}(h_j)\),
+      where \(0 \leq j < N\).
+      \begin{align*}
+        F_k &= \left(\sum_{n=1}^k n z_n + z_{k+1} +
+            \sum_{n=k+2}^{N-1} (N - n) z_n\right) -
+          \left(\sum_{n=1}^{k-1} n z_n + z_k +
+            \sum_{n=k+1}^{N-1} (N - n) z_n\right) \\
+        &= k z_k + z_{k+1} - z_k + (N - k - 2) z_{k+2} \\
+        F_k &= (k - 1) z_k + z_{k+1} - (N - k - 1) z_{k+1}
+      \end{align*}
+      ... Hmmm ...
   \end{enumerate}
 \end{solution}
 
